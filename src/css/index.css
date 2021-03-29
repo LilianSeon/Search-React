@@ -1,0 +1,20 @@
+.assistance-title{
+    font-size: 18px;
+    line-height: 1.52947;
+    font-weight: 600;
+    letter-spacing: -.021em;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+
+.assistance-content{
+    margin-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.52947;
+    font-weight: 400;
+    letter-spacing: -.01em;
+}
+
+.react-tabs__tab-list{
+    padding-left: 0px;
+}

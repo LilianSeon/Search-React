@@ -1,22 +1,31 @@
 
 import React, {Component} from 'react';
-import Menu from './component/Menu'
+import Menu from './component/Menu';
+import Product from './component/Product';
+import Assistance from './component/Assistance';
+import AssistanceTest from './component/AssistanceTest';
+import Video from './component/Video';
 import './App.css';
 import './css/boosted.css';
 import './css/style.css';
 import './index.css'
+import './conf/AlgoliaConfTest';
 
 import algoliasearch from 'algoliasearch';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-
-const searchClient = algoliasearch(
-  'UQ5V1RCRHZ',
-  '625dc522ad32d77e986d35fc93081394'
+const searchClient = algoliasearch( // Connexion à Algolia API
+  window.searchAlgoliaConfig.algolia.applicationId,
+  window.searchAlgoliaConfig.algolia.apiKey
 );
 
-const index1 = searchClient.initIndex('orange.be_obel_shop_fr');
-const indexSuggest = searchClient.initIndex('orange.be_obel_shop_fr_query_suggestions');
+
+window.searchAlgoliaConfig.indices.map((indices, i) => { // Init Algolia pour chaque index
+  window['index'+i] = searchClient.initIndex(indices.indiceKey);
+  window['nbHits'+i] = 0;
+  return true
+})
+
 
 class App extends Component {
 
@@ -24,10 +33,32 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      hits: [],
-      nbHits: 0,
-      suggest: []
+      hits0: [],
+      hits1: [],
+      hits2: [],
+      hits3: [],
+      hits4: [],
+      hits5: [],
+      hits6: [],
+      hits7: [],
+      count: 0,
+      suggest: [],
+      algoliaConf: window.searchAlgoliaConfig
     };
+    
+  }
+
+  componentDidMount(){
+    window.searchAlgoliaConfig.indices.map((indices, i) => {
+      if(indices.template === "suggestion" ){
+        window['index'+i].search(" ").then(({hits}) => {
+          this.setState({
+            suggest: hits
+          })
+        })
+      }
+      return true;
+    })
   }
 
   getQuery(e){ // Get the query of the user
@@ -36,18 +67,120 @@ class App extends Component {
       query: e.target.value
     });
 
-    index1.search(e.target.value).then(({ hits, nbHits }) => {
-      this.setState({
-        hits: hits,
-        nbHits: nbHits 
-      });
-    });
-
-    indexSuggest.search(e.target.value).then(({hits}) => {
-      this.setState({
-        suggest: hits
-      })
+    window.searchAlgoliaConfig.indices.map((indices, i) => {
+      if(indices.template === "suggestion" ){
+        window['index'+i].search(e.target.value).then(({hits}) => {
+          this.setState({
+            suggest: hits
+          })
+        })
+      }
+      return true;
     })
+
+    try{
+      window.index0.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+0] = nbHits;
+        this.setState({
+          hits0: hits
+        })
+      });
+    }catch(e){
+      console.log(e);
+    }
+
+    try{
+      window.index1.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+1] = nbHits;
+        this.setState({
+          hits1: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index2.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+2] = nbHits;
+        this.setState({
+          hits2: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index3.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+3] = nbHits;
+        this.setState({
+          hits3: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index4.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+4] = nbHits;
+        this.setState({
+          hits4: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index5.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+5] = nbHits;
+        this.setState({
+          hits5: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index6.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+6] = nbHits;
+        this.setState({
+          hits6: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+    try{
+      window.index7.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+        window['nbHits'+7] = nbHits;
+        this.setState({
+          hits7: hits
+        })
+      });
+    }catch(e){
+      return e;
+    }
+
+
+  }
+
+  count(){
+    
+    let count = 0;
+    window.searchAlgoliaConfig.indices.map((indices, i) => {
+      if(indices.template !== "suggestion" ){
+        count += window['nbHits'+i];  
+      }
+      return true;
+    })
+
+    return count;
+    
   }
 
   render() {
@@ -83,67 +216,64 @@ class App extends Component {
 
         <div className="TopTendances">
       <h2 className="TopTendances-title">Top tendances</h2>
-      <div className="TopTendances-date">13 novembre 2020</div>
       <ul className="TopTendances-items Autosearch-items">
       {
         this.state.suggest.slice(0, 6).map((suggest) => {
             return(
-            <li data-autosearch="iphone">{suggest.query}</li>
+            <li>{suggest.query}</li>
             )
         })
       }
       </ul>
       <div className="SearchDetails" style={{display: "block"}}>
-        <span className="SearchDetails-count">{this.state.nbHits}</span> résultats pour «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
+        <span className="SearchDetails-count">{this.count()}</span> résultats pour «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
       </div>
     </div>
 
         <Tabs>
           <TabList>
             <ul className="nav nav-tabs nav-tabs-light">
-              <Tab><li className="SearchTabs-item nav-item" id="searchtab-products-services">Produit <span className="SearchTabs-resultsCount"> ({this.state.nbHits})</span></li></Tab>
-              <Tab><li className="SearchTabs-item nav-item" id="searchtab-products-services">Assistance</li></Tab>
+              {
+                window.searchAlgoliaConfig.indices.map((indices, i) => {
+                  if(indices.template !== "suggestion" ){
+                    return(<Tab key={i} disabled={window['nbHits'+i] === 0 ? true : false}><li className="SearchTabs-item nav-item" id="searchtab-products-services" style={{color: window['nbHits'+i] === 0 ? "#ddd" : "#000", cursor: window['nbHits'+i] === 0 ? "not-allowed" : "pointer"}}>{indices.tabTitle} <span id={"count"+i} className="SearchTabs-resultsCount"> ({window['nbHits'+i]})</span></li></Tab>)
+                  }
+                  return true;
+                })
+              }
             </ul>
           </TabList>
-
-          <TabPanel>
-          <div className="PageSearch-searchProducts" style={{display: 'block'}}>
-              <div id="PageSearch-block-products">
-                  <div className="PageSearch-section GridChange">
-                      <h2 className="PageSearch-title-h3">Produits</h2>
-                  </div>
-
-                  <ul className="Results-items SearchProduct-wrapper resultProductsWrapper isRow">
-                  {
-                    this.state.hits.slice(0, 6).map((hits) => {
-                        return(
-                          <li className="SearchProduct" key={hits.idProduct}>
-                              <a target="_blank" href={hits.objectID}>
-                                  <div className="SearchProduct-imgWrapper">
-                                      <img src={hits.productPictureUrl} alt="" />
-                                  </div>
-                                  <div className="SearchProduct-textWrapper">
-                                    <div className="SearchProduct-title">{hits.title}</div>
-                                      <div className="SearchProduct-subtitle">
-                                          <div className="SearchProduct-price">{hits.price} {hits.currencyPrice}</div>
-                                      </div>
-                                      <div className="SearchProduct-content" style={{display: "block"}}>{hits.content}</div>
-                                  </div>
-                              </a>
-                          </li>
-                        )
-                    })
-
-                  }
-                  </ul>
-
-                  <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" data-index="products">Afficher plus de résultats</button>
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <h2>Assistance</h2>
-          </TabPanel>
+          {
+            window.searchAlgoliaConfig.indices.map((indices, i) => {
+              if(indices.template === "Product"){
+                return(
+                  <TabPanel key={i}>
+                    <Product hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                  </TabPanel>
+                )
+              }else if(indices.template === "Assistance"){
+                return(
+                  <TabPanel key={i}>
+                    <Assistance hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                  </TabPanel>
+                )
+              }else if(indices.template === "Video"){
+                return(
+                  <TabPanel key={i}>
+                    <Video hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                  </TabPanel>
+                )
+              }else if(indices.template === "AssistanceTest"){
+                return(
+                  <TabPanel key={i}>
+                    <AssistanceTest hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                  </TabPanel>
+                )
+              }
+              return true;
+            })
+          }
+          
         </Tabs>
         </div>
       </div>
