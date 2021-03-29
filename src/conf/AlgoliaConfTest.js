@@ -3,6 +3,32 @@ window.searchAlgoliaConfig = {
       applicationId: 'UQ5V1RCRHZ',
       apiKey: '625dc522ad32d77e986d35fc93081394',
     },
+    label: {
+      searchButton: "Rechercher",
+      topTrends: "Top Tendances",
+      resultsFor: "résultats pour",
+      noResults: {
+        mainText: "Oups !!! Aucun résultat ne correspond à votre recherche.",
+        list1: "Vérifiez l’orthographe des termes de recherche.",
+        list2: "Essayez d'autres mots.",
+        list3: "Utilisez des mots clés plus généraux.",
+        banner:{
+          mainText: "Certains liens, ci-dessous, peuvent vous aider dans votre recherche :",
+          text1: "Les offres Orange",
+          url1: "google.fr",
+          icon1: "",
+          text2: "Les mobiles",
+          url2: "google.fr",
+          icon2: "",
+          text3: "L'assistance",
+          url3: "google.fr",
+          icon3: "",
+          text4: "Le magazine",
+          url4: "google.fr",
+          icon4: "",
+        }
+      }
+    },
     indices: [
                {
                 indiceKey: 'orange.be_obel_shop_fr',
@@ -39,13 +65,6 @@ window.searchAlgoliaConfig = {
                {
                 indiceKey: "orange.be_obel_shop_fr_query_suggestions",
                 template: "suggestion",
-                templateAttributes: { // For #resultSuggestTemplate
-                  query: 'query'
-                },
-                response: {},
-                blockToShow: {
-                  page: 6,
-                }
               },
     ]
   };

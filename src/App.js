@@ -5,6 +5,7 @@ import Product from './component/Product';
 import Assistance from './component/Assistance';
 import AssistanceTest from './component/AssistanceTest';
 import Video from './component/Video';
+import NoResults from './component/NoResults';
 import './App.css';
 import './css/boosted.css';
 import './css/style.css';
@@ -210,12 +211,12 @@ class App extends Component {
                 <path d="M12.766 6.125a6.64 6.64 0 1 0 0 13.281 6.64 6.64 0 0 0 0-13.281M27.77 26.597l-1.174 1.174a.784.784 0 0 1-1.105 0l-7.055-7.055a9.721 9.721 0 0 1-5.671 1.815A9.764 9.764 0 0 1 3 12.766 9.766 9.766 0 0 1 12.766 3c5.393 0 9.765 4.372 9.765 9.766a9.72 9.72 0 0 1-1.815 5.671l7.055 7.055a.784.784 0 0 1 0 1.105" fill-rule="evenodd"></path>
               </svg>
             </span>
-            Rechercher
+            {window.searchAlgoliaConfig.label.searchButton}
         </button>
         </form>
 
         <div className="TopTendances">
-      <h2 className="TopTendances-title">Top tendances</h2>
+      <h2 className="TopTendances-title">{window.searchAlgoliaConfig.label.topTrends}</h2>
       <ul className="TopTendances-items Autosearch-items">
       {
         this.state.suggest.slice(0, 6).map((suggest) => {
@@ -226,7 +227,7 @@ class App extends Component {
       }
       </ul>
       <div className="SearchDetails" style={{display: "block"}}>
-        <span className="SearchDetails-count">{this.count()}</span> résultats pour «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
+        <span className="SearchDetails-count">{this.count()}</span> {window.searchAlgoliaConfig.label.resultsFor} «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
       </div>
     </div>
 
@@ -246,29 +247,69 @@ class App extends Component {
           {
             window.searchAlgoliaConfig.indices.map((indices, i) => {
               if(indices.template === "Product"){
-                return(
-                  <TabPanel key={i}>
-                    <Product hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
-                  </TabPanel>
-                )
+                if(eval("this.state.hits"+i+".length > 0")){
+                  return(
+                    <TabPanel key={i}>
+                      <Product hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    </TabPanel>
+                  )
+                  }else{
+                    if(this.state.query !== ""){
+                      return(
+                        <TabPanel key={i}>
+                          <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+                        </TabPanel>
+                      )
+                    }
+                }
               }else if(indices.template === "Assistance"){
-                return(
-                  <TabPanel key={i}>
-                    <Assistance hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
-                  </TabPanel>
-                )
+                if(eval("this.state.hits"+i+".length > 0")){
+                  return(
+                    <TabPanel key={i}>
+                      <Assistance hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    </TabPanel>
+                  )
+                }else{
+                  if(this.state.query !== ""){
+                    return(
+                      <TabPanel key={i}>
+                        <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+                      </TabPanel>
+                    )
+                  }
+                }
               }else if(indices.template === "Video"){
-                return(
-                  <TabPanel key={i}>
-                    <Video hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
-                  </TabPanel>
-                )
+                if(eval("this.state.hits"+i+".length > 0") && this.state.query !== ""){
+                  return(
+                    <TabPanel key={i}>
+                      <Video hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    </TabPanel>
+                  )
+                }else{
+                  if(this.state.query !== ""){
+                    return(
+                      <TabPanel key={i}>
+                        <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+                      </TabPanel>
+                    )
+                  }
+                }
               }else if(indices.template === "AssistanceTest"){
-                return(
-                  <TabPanel key={i}>
-                    <AssistanceTest hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
-                  </TabPanel>
-                )
+                if(eval("this.state.hits"+i+".length > 0") && this.state.query !== ""){
+                  return(
+                    <TabPanel key={i}>
+                      <AssistanceTest hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    </TabPanel>
+                  )
+                }else{
+                  if(this.state.query !== ""){
+                    return(
+                      <TabPanel key={i}>
+                        <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+                      </TabPanel>
+                    )
+                  }
+                }
               }
               return true;
             })

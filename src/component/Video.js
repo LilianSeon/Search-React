@@ -32,7 +32,7 @@ class Video extends Component{
 
     render(){
         return(
-            <div className="PageSearch-searchVideos6" style={{ display: this.props.hits.length ? "block" : "none"}}>
+            <div className="PageSearch-searchVideos" style={{ display: this.props.hits.length ? "block" : "none"}}>
                 <div className="PageSearch-section"> 
                     <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
                 </div> 

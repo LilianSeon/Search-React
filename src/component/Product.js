@@ -7,6 +7,7 @@ class Product extends Component{
         super(props);
         this.state = {
             hits: [],
+            hitsToShow: this.props.hitsToShow
         };
     }
 
@@ -22,6 +23,12 @@ class Product extends Component{
         }
     }
 
+    showMore(){
+        this.setState({
+            hitsToShow: this.state.hitsToShow + this.props.hitsToShow
+        });
+    }
+
     render(){
         return(
             <div className="PageSearch-searchProducts" style={{ display: this.props.hits.length ? "block" : "none"}}>
@@ -32,9 +39,9 @@ class Product extends Component{
 
                   <ul className="Results-items SearchProduct-wrapper resultProductsWrapper isRow">
                   {
-                    this.props.hits.slice(0, this.props.hitsToShow).map((hits) => {
+                    this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                         return(
-                          <li className="SearchProduct" key={hits.idProduct}>
+                          <li className="SearchProduct" key={i}>
                               <a target="_blank" href={hits.objectID} rel="noreferrer">
                                   <div className="SearchProduct-imgWrapper">
                                       <img src={hits.productPictureUrl} alt="" />
@@ -54,7 +61,7 @@ class Product extends Component{
                   }
                   </ul>
 
-                  <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" data-index="products">Afficher plus de résultats</button>
+                  <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats</button>
               </div>
             </div>
         )

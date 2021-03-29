@@ -34,7 +34,7 @@ class AssistanceTest extends Component{
         return(
             <div className="PageSearch-searchAssistance" style={{ display: this.props.hits.length ? "block" : "none"}}> 
                 <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
-                <ul className="PageSearch-searchAssistance-Results-items resultAssistance3Wrapper">
+                <ul className="PageSearch-searchAssistance-Results-items">
                 {
                     this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                         return(
