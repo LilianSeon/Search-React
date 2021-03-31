@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import NoResults from './NoResults';
 
 
 class Assistance extends Component{
@@ -31,26 +32,32 @@ class Assistance extends Component{
     }
 
     render(){
-        return(
-            <div className="PageSearch-searchAssistance" style={{ display: this.props.hits.length ? "block" : "none"}}>
-                <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
-                <ul className="PageSearch-searchAssistance-Results-items resultAssistance3Wrapper">
-                {
-                    this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
-                        return(
-                            <li className="SearchResult" key={i}>
-                                <a target="_blank" href={hits.objectID} rel="noreferrer"> 
-                                    <div className="SearchResult-title">{hits.title}</div> 
-                                    <div className="SearchResult-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
-                                </a>
-                            </li>
-                        )
-                    })
-                }
-                </ul> 
-            <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button> 
-            </div>
-        )
+        if(this.props.hits.length){
+            return(
+                <div className="PageSearch-searchAssistance" style={{ display: this.props.hits.length ? "block" : "none"}}>
+                    <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
+                    <ul className="PageSearch-searchAssistance-Results-items resultAssistance3Wrapper">
+                    {
+                        this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
+                            return(
+                                <li className="SearchResult" key={i}>
+                                    <a target="_blank" href={hits.objectID} rel="noreferrer"> 
+                                        <div className="SearchResult-title">{hits.title}</div> 
+                                        <div className="SearchResult-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
+                                    </a>
+                                </li>
+                            )
+                        })
+                    }
+                    </ul> 
+                <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button> 
+                </div>
+            )
+        }else{
+            return(
+                <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+            )
+        }
     }
 }
 

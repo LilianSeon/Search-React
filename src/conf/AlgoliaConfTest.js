@@ -3,6 +3,11 @@ window.searchAlgoliaConfig = {
       applicationId: 'UQ5V1RCRHZ',
       apiKey: '625dc522ad32d77e986d35fc93081394',
     },
+    direction: "ltr",
+    advertising:{
+      image: "../../public/img/pub.jpg",
+      url: "https://www.orange.be/fr/produits-et-services/abonnements-gsm"
+    },
     label: {
       searchButton: "Rechercher",
       topTrends: "Top Tendances",
@@ -16,16 +21,16 @@ window.searchAlgoliaConfig = {
           mainText: "Certains liens, ci-dessous, peuvent vous aider dans votre recherche :",
           text1: "Les offres Orange",
           url1: "google.fr",
-          icon1: "",
+          icon1: "../img/pannier.png",
           text2: "Les mobiles",
           url2: "google.fr",
-          icon2: "",
+          icon2: "../img/chat.png",
           text3: "L'assistance",
           url3: "google.fr",
-          icon3: "",
+          icon3: "../img/home.png",
           text4: "Le magazine",
           url4: "google.fr",
-          icon4: "",
+          icon4: "../img/pannier.png",
         }
       }
     },
@@ -33,6 +38,9 @@ window.searchAlgoliaConfig = {
                {
                 indiceKey: 'orange.be_obel_shop_fr',
                 template: "Product",
+                sortByRelevance: "Trier par pertinence",
+                sortByAscendingPrice: "Trier par prix croissant",
+                sortByDescendingPrice: "Trier par prix décroissant",
                 tabTitle: "Produits",
                 title: "Produits",
                 contentMaxWords: 15,
