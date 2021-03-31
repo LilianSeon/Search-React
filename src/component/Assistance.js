@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import NoResults from './NoResults';
-
+import pub from '../img/pub.jpg'
 
 class Assistance extends Component{
 
@@ -34,23 +34,30 @@ class Assistance extends Component{
     render(){
         if(this.props.hits.length){
             return(
-                <div className="PageSearch-searchAssistance" style={{ display: this.props.hits.length ? "block" : "none"}}>
-                    <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
-                    <ul className="PageSearch-searchAssistance-Results-items resultAssistance3Wrapper">
-                    {
-                        this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
-                            return(
-                                <li className="SearchResult" key={i}>
-                                    <a target="_blank" href={hits.objectID} rel="noreferrer"> 
-                                        <div className="SearchResult-title">{hits.title}</div> 
-                                        <div className="SearchResult-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
-                                    </a>
-                                </li>
-                            )
-                        })
-                    }
-                    </ul> 
-                <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button> 
+                <div className="container PageSearch-resultsContainer" style={{ display: this.props.hits.length ? "flex" : "none"}}>
+                    <div className="PageSearch-results">
+                        <h2 className="PageSearch-title-h3">{this.props.title}</h2> 
+                        <ul className="PageSearch-searchAssistance-Results-items resultAssistance3Wrapper">
+                        {
+                            this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
+                                return(
+                                    <li className="SearchResult" key={i}>
+                                        <a target="_blank" href={hits.objectID} rel="noreferrer"> 
+                                            <div className="SearchResult-title">{hits.title}</div> 
+                                            <div className="SearchResult-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
+                        </ul> 
+                        <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button> 
+                    </div>
+                    <div className="PageSearch-sidebar"> 
+                        <div className="SearchAdvertisment"> 
+                            <a href={this.state.url}><img src={pub} alt="Go Plus - res - FR"/></a> 
+                        </div> 
+                    </div>
                 </div>
             )
         }else{

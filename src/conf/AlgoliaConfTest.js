@@ -10,7 +10,7 @@ window.searchAlgoliaConfig = {
     },
     label: {
       searchButton: "Rechercher",
-      topTrends: "Top Tendances",
+      topTrends: "Suggestions",
       resultsFor: "résultats pour",
       noResults: {
         mainText: "Oups !!! Aucun résultat ne correspond à votre recherche.",
