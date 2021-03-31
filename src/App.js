@@ -338,31 +338,31 @@ handleListen(){
               if(indices.template === "Product"){
                 return(
                   <TabPanel key={i}>
-                    <Product callback={this.getFilter.bind(this)} hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow} index={indices.indiceKey} select={indices}/>
+                    <Product callback={this.getFilter.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow} index={indices.indiceKey} select={indices}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Assistance"){
                 return(
                   <TabPanel key={i}>
-                    <Assistance hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Assistance hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Video"){
                 return(
                   <TabPanel key={i}>
-                    <Video hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Video hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "AssistanceTest"){
                 return(
                   <TabPanel key={i}>
-                    <AssistanceTest hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <AssistanceTest hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Brand"){
                 return(
                   <TabPanel key={i}>
-                    <Brand hits={eval("this.state.hits"+i)} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Brand hits={this.state[`hits${i}`]} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }
