@@ -51,7 +51,7 @@ window.searchAlgoliaConfig = {
                 template: "Assistance",
                 tabTitle: "Assistance Belgique",
                 title: "Assistance OBL",
-                contentMaxWords: 30,
+                contentMaxWords: 25,
                 hitsToShow: 5,
               },
               {
@@ -59,7 +59,7 @@ window.searchAlgoliaConfig = {
                 template: "AssistanceTest",
                 tabTitle: "Assistance Belgique 2",
                 title: "Assistance OBL 2",
-                contentMaxWords: 30,
+                contentMaxWords: 25,
                 hitsToShow: 10,
               },
               {
@@ -70,9 +70,16 @@ window.searchAlgoliaConfig = {
                 contentMaxWords: 20,
                 hitsToShow: 10,
               },
+              {
+                indiceKey: 'orange_numendo_brand',
+                template: "Brand",
+                tabTitle: "Marques",
+                title: "Marques",
+                hitsToShow: 6,
+              },
                {
                 indiceKey: "orange.be_obel_shop_fr_query_suggestions",
-                template: "suggestion",
+                template: "Suggestion",
               },
     ]
   };

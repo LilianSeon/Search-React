@@ -4,6 +4,7 @@ import Product from './component/Product';
 import Assistance from './component/Assistance';
 import AssistanceTest from './component/AssistanceTest';
 import Video from './component/Video';
+import Brand from './component/Brand';
 import './App.css';
 import './css/boosted.css';
 import './css/style.css';
@@ -59,7 +60,7 @@ class App extends Component {
 
   componentDidMount(){
     window.searchAlgoliaConfig.indices.map((indices, i) => {
-      if(indices.template === "suggestion" ){
+      if(indices.template === "Suggestion" ){
         window['index'+i].search(" ").then(({hits}) => {
           this.setState({
             suggest: hits
@@ -88,7 +89,7 @@ class App extends Component {
     });
 
     window.searchAlgoliaConfig.indices.map((indices, i) => {
-      if(indices.template === "suggestion" ){
+      if(indices.template === "Suggestion" ){
         window['index'+i].search(e.target.value).then(({hits}) => {
           this.setState({
             suggest: hits
@@ -193,7 +194,7 @@ class App extends Component {
     
     let count = 0;
     window.searchAlgoliaConfig.indices.map((indices, i) => {
-      if(indices.template !== "suggestion" ){
+      if(indices.template !== "Suggestion" ){
         count += window['nbHits'+i];  
       }
       return true;
@@ -279,14 +280,14 @@ handleListen(){
             <div className="SearchForm-inputButton">
                 <span onClick={this.clearQuery.bind(this)} className="SearchForm-inputClear" style={{display: this.state.query !== "" ? "block" : "none"}}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-                    <path fill-rule="evenodd" d="M29.732 25.462l-5.337-5.336 5.337-5.337a1.51 1.51 0 0 0 0-2.135l-2.135-2.134a1.51 1.51 0 0 0-2.135 0l-5.336 5.336-5.337-5.336a1.51 1.51 0 0 0-2.135 0l-2.134 2.134a1.51 1.51 0 0 0 0 2.135l5.336 5.337-5.336 5.336a1.51 1.51 0 0 0 0 2.135l2.134 2.135c.59.59 1.546.59 2.135 0l5.337-5.337 5.336 5.337c.59.59 1.546.59 2.135 0l2.135-2.135a1.51 1.51 0 0 0 0-2.135"></path>
+                    <path fillRule="evenodd" d="M29.732 25.462l-5.337-5.336 5.337-5.337a1.51 1.51 0 0 0 0-2.135l-2.135-2.134a1.51 1.51 0 0 0-2.135 0l-5.336 5.336-5.337-5.336a1.51 1.51 0 0 0-2.135 0l-2.134 2.134a1.51 1.51 0 0 0 0 2.135l5.336 5.337-5.336 5.336a1.51 1.51 0 0 0 0 2.135l2.134 2.135c.59.59 1.546.59 2.135 0l5.337-5.337 5.336 5.337c.59.59 1.546.59 2.135 0l2.135-2.135a1.51 1.51 0 0 0 0-2.135"></path>
                   </svg>
                 </span>
                 {
                   navigator.userAgent.indexOf("Chrome") !== -1 ?
                   <span id="micro" className="SearchForm-inputMicro" onClick={this.microClicked.bind(this)} style={{fill: this.state.listening ? "green" : "black"}}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
-                      <path fill-rule="evenodd" d="M32.875 22.4a1.12 1.12 0 0 0-1.125 1.114v1.115c0 3.692-3.022 6.685-6.75 6.685s-6.75-2.993-6.75-6.685v-1.115a1.12 1.12 0 0 0-1.125-1.114A1.12 1.12 0 0 0 16 23.514v1.115c-.002 4.499 3.382 8.294 7.89 8.847v2.295h-2.64c-.828 0-1.5.666-1.5 1.486V38h10.5v-.743c0-.82-.672-1.486-1.5-1.486h-2.64v-2.295c4.508-.553 7.893-4.348 7.89-8.847v-1.115a1.12 1.12 0 0 0-1.125-1.114zM25 12c-2.9 0-5.25 2.328-5.25 5.2v7.429c0 2.871 2.35 5.2 5.25 5.2s5.25-2.329 5.25-5.2V17.2c0-2.872-2.35-5.2-5.25-5.2zm-3.75 9.657V17.2c0-2.051 1.679-3.714 3.75-3.714 2.071 0 3.75 1.663 3.75 3.714v4.457h-7.5z"></path>
+                      <path fillRule="evenodd" d="M32.875 22.4a1.12 1.12 0 0 0-1.125 1.114v1.115c0 3.692-3.022 6.685-6.75 6.685s-6.75-2.993-6.75-6.685v-1.115a1.12 1.12 0 0 0-1.125-1.114A1.12 1.12 0 0 0 16 23.514v1.115c-.002 4.499 3.382 8.294 7.89 8.847v2.295h-2.64c-.828 0-1.5.666-1.5 1.486V38h10.5v-.743c0-.82-.672-1.486-1.5-1.486h-2.64v-2.295c4.508-.553 7.893-4.348 7.89-8.847v-1.115a1.12 1.12 0 0 0-1.125-1.114zM25 12c-2.9 0-5.25 2.328-5.25 5.2v7.429c0 2.871 2.35 5.2 5.25 5.2s5.25-2.329 5.25-5.2V17.2c0-2.872-2.35-5.2-5.25-5.2zm-3.75 9.657V17.2c0-2.051 1.679-3.714 3.75-3.714 2.071 0 3.75 1.663 3.75 3.714v4.457h-7.5z"></path>
                     </svg>
                   </span>
                 : null
@@ -296,7 +297,7 @@ handleListen(){
         <button type="submit" className="SearchForm-submit btn btn-primary">
             <span>
               <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.766 6.125a6.64 6.64 0 1 0 0 13.281 6.64 6.64 0 0 0 0-13.281M27.77 26.597l-1.174 1.174a.784.784 0 0 1-1.105 0l-7.055-7.055a9.721 9.721 0 0 1-5.671 1.815A9.764 9.764 0 0 1 3 12.766 9.766 9.766 0 0 1 12.766 3c5.393 0 9.765 4.372 9.765 9.766a9.72 9.72 0 0 1-1.815 5.671l7.055 7.055a.784.784 0 0 1 0 1.105" fill-rule="evenodd"></path>
+                <path d="M12.766 6.125a6.64 6.64 0 1 0 0 13.281 6.64 6.64 0 0 0 0-13.281M27.77 26.597l-1.174 1.174a.784.784 0 0 1-1.105 0l-7.055-7.055a9.721 9.721 0 0 1-5.671 1.815A9.764 9.764 0 0 1 3 12.766 9.766 9.766 0 0 1 12.766 3c5.393 0 9.765 4.372 9.765 9.766a9.72 9.72 0 0 1-1.815 5.671l7.055 7.055a.784.784 0 0 1 0 1.105" fillRule="evenodd"></path>
               </svg>
             </span>
             {window.searchAlgoliaConfig.label.searchButton}
@@ -307,9 +308,9 @@ handleListen(){
       <h2 className="TopTendances-title">{window.searchAlgoliaConfig.label.topTrends}</h2>
       <ul className="TopTendances-items Autosearch-items">
       {
-        this.state.suggest.slice(0, 6).map((suggest) => {
+        this.state.suggest.slice(0, 6).map((suggest, i) => {
             return(
-            <li onClick={() => this.suggestCliked(suggest.query)}>{suggest.query}</li>
+            <li key={i} onClick={() => this.suggestCliked(suggest.query)}>{suggest.query}</li>
             )
         })
       }
@@ -324,7 +325,7 @@ handleListen(){
             <ul className="nav nav-tabs nav-tabs-light">
               {
                 window.searchAlgoliaConfig.indices.map((indices, i) => {
-                  if(indices.template !== "suggestion" ){
+                  if(indices.template !== "Suggestion" ){
                     return(<Tab key={i} disabled={window['nbHits'+i] === 0 ? true : false} selectedClassName="selected" className="SearchTabs-item nav-item" style={{color: window['nbHits'+i] === 0 ? "#ddd" : "#000", cursor: window['nbHits'+i] === 0 ? "not-allowed" : "pointer"}}>{indices.tabTitle} <span id={"count"+i} className="SearchTabs-resultsCount"> ({window['nbHits'+i]})</span></Tab>)
                   }
                   return true;
@@ -356,6 +357,12 @@ handleListen(){
                 return(
                   <TabPanel key={i}>
                     <AssistanceTest hits={eval("this.state.hits"+i)} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                  </TabPanel>
+                )
+              }else if(indices.template === "Brand"){
+                return(
+                  <TabPanel key={i}>
+                    <Brand hits={eval("this.state.hits"+i)} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }

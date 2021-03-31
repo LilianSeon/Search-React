@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../css/index.css';
 import NoResults from './NoResults';
 import pub from '../img/pub.jpg'
+import ReactHtmlParser from 'react-html-parser';
 
 class AssistanceTest extends Component{
 
@@ -44,9 +45,9 @@ class AssistanceTest extends Component{
                                     return(
                                         <li className="SearchResult" key={i}>
                                             <a target="_blank" href={hits.objectID} rel="noreferrer" style={{marginBottom:0}}> 
-                                                <div className="assistance-title">{hits.title}</div> 
+                                                <div className="assistance-title">{ReactHtmlParser(hits._highlightResult.title.value)}</div> 
                                             </a>
-                                            <div className="assistance-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
+                                            <div className="assistance-content">{ReactHtmlParser(this.truncate(hits._highlightResult.content.value, this.props.contentMaxWords))}</div>
                                             <hr/>
                                         </li>
                                     )

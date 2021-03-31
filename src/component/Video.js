@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import playIcon from '../img/icon-playB.svg';
 import NoResults from './NoResults';
 import pub from '../img/pub.jpg'
+import ReactHtmlParser from 'react-html-parser';
 
 class Video extends Component{
 
@@ -50,8 +51,8 @@ class Video extends Component{
                                                 <img className="SearchVideo-play" src={playIcon} alt=""/> 
                                             </div> 
                                             <div className="SearchVideo-textWrapper"> 
-                                                <div className="SearchVideo-title">{hits.title}</div> 
-                                                <div className="SearchVideo-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div> 
+                                                <div className="SearchVideo-title">{ReactHtmlParser(hits._highlightResult.title.value)}</div> 
+                                                <div className="SearchVideo-content">{ReactHtmlParser(this.truncate(hits._highlightResult.description.value, this.props.contentMaxWords))}</div> 
                                             </div>
                                         </a>
                                     </li>

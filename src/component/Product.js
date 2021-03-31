@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import NoResults from './NoResults';
 import pub from '../img/pub.jpg'
+import ReactHtmlParser from 'react-html-parser';
 
 class Product extends Component{
 
@@ -63,15 +64,15 @@ class Product extends Component{
                         <div id="PageSearch-block-products">
                             <div className="PageSearch-section GridChange">
                                 <h2 className="PageSearch-title-h3">{this.props.title}</h2>
-                                <div class="GridChange-changeMode"> 
-                                    <button data-mode="grid" class={!this.state.isRow ? "isActive" : null} onClick={this.handleRow.bind(this)}>
+                                <div className="GridChange-changeMode"> 
+                                    <button data-mode="grid" className={!this.state.isRow ? "isActive" : null} onClick={this.handleRow.bind(this)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
-                                            <path fill-rule="evenodd" d="M26.778 24.222H37V14H26.778v10.222zm-12.778 0h10.222V14H14v10.222zM26.778 37H37V26.778H26.778V37zM14 37h10.222V26.778H14V37z"></path>
+                                            <path fillRule="evenodd" d="M26.778 24.222H37V14H26.778v10.222zm-12.778 0h10.222V14H14v10.222zM26.778 37H37V26.778H26.778V37zM14 37h10.222V26.778H14V37z"></path>
                                         </svg>
                                     </button> 
-                                    <button data-mode="row" class={this.state.isRow ? "isActive" : null} onClick={this.handleRow.bind(this)}>
+                                    <button data-mode="row" className={this.state.isRow ? "isActive" : null} onClick={this.handleRow.bind(this)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
-                                            <path fill-rule="evenodd" d="M14 17.833h23V14H14v3.833zm0 6.39h23v-3.834H14v3.833zm0 6.388h23v-3.833H14v3.833zM14 37h23v-3.833H14V37z"></path>
+                                            <path fillRule="evenodd" d="M14 17.833h23V14H14v3.833zm0 6.39h23v-3.834H14v3.833zm0 6.388h23v-3.833H14v3.833zM14 37h23v-3.833H14V37z"></path>
                                         </svg>
                                     </button> 
                                 </div>
@@ -80,6 +81,7 @@ class Product extends Component{
                             <ul className={this.state.isRow ? "Results-items SearchProduct-wrapper resultProductsWrapper isRow" : "Results-items SearchProduct-wrapper resultProductsWrapper"}>
                             {
                                 this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
+                                    console.log(hits._highlightResult)
                                     return(
                                     <li className="SearchProduct" key={i}>
                                         <a target="_blank" href={hits.objectID} rel="noreferrer">
@@ -87,11 +89,11 @@ class Product extends Component{
                                                 <img src={hits.productPictureUrl} alt="" />
                                             </div>
                                             <div className="SearchProduct-textWrapper">
-                                                <div className="SearchProduct-title">{hits.title}</div>
+                                                <div className="SearchProduct-title">{ReactHtmlParser(hits._highlightResult.title.value)}</div>
                                                 <div className="SearchProduct-subtitle">
                                                     <div className="SearchProduct-price">{hits.price} {hits.currencyPrice}</div>
                                                 </div>
-                                                <div className="SearchProduct-content" style={{display: this.state.isRow ? "block" : "none"}}>{this.truncate(hits.content, this.props.contentMaxWords)}</div>
+                                                <div className="SearchProduct-content" style={{display: this.state.isRow ? "block" : "none"}}>{ReactHtmlParser(this.truncate(hits._highlightResult.content.value, this.props.contentMaxWords))}</div>
                                             </div>
                                         </a>
                                     </li>

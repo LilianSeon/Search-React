@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import NoResults from './NoResults';
 import pub from '../img/pub.jpg'
+import ReactHtmlParser from 'react-html-parser';
 
 class Assistance extends Component{
 
@@ -43,8 +44,8 @@ class Assistance extends Component{
                                 return(
                                     <li className="SearchResult" key={i}>
                                         <a target="_blank" href={hits.objectID} rel="noreferrer"> 
-                                            <div className="SearchResult-title">{hits.title}</div> 
-                                            <div className="SearchResult-content">{this.truncate(hits.content, this.props.contentMaxWords)}</div>
+                                            <div className="SearchResult-title">{ReactHtmlParser(hits._highlightResult.title.value)}</div> 
+                                            <div className="SearchResult-content">{ReactHtmlParser(this.truncate(hits._highlightResult.content.value, this.props.contentMaxWords))}</div>
                                         </a>
                                     </li>
                                 )
