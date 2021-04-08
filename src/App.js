@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Menu from './component/Menu';
 import Product from './component/Product';
 import Assistance from './component/Assistance';
 import AssistanceTest from './component/AssistanceTest';
@@ -52,7 +51,8 @@ class App extends Component {
       algoliaConf: window.searchAlgoliaConfig,
       index: "",
       listening: false,
-      voice: ""
+      voice: "",
+      mosseConf: window.searchAlgoliaConfig.menu.mosseConf
     };
     this.setQuery({target:{value: " "}})
     
@@ -322,7 +322,8 @@ handleListen(){
     console.log(this.state.tabIndex, this.state.nbIndex)
     return (
       <div>
-        <Menu/>
+        <script type="text/javascript">{JSON.stringify(this.state.mosseConf)}</script>
+        <div id={window.searchAlgoliaConfig.menu.menuDivId}></div>
         <div className="PageSearch">
         <div className="container">
         <form className="SearchForm" action="">
@@ -424,6 +425,8 @@ handleListen(){
         </Tabs>
         </div>
         </div>
+        <div id={window.searchAlgoliaConfig.menu.footerDivId}></div>
+        <script type="text/javascript" src={window.searchAlgoliaConfig.menu.linkMenu}></script> 
       </div>
     )
   }

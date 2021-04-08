@@ -3,6 +3,12 @@ window.searchAlgoliaConfig = {
       applicationId: 'UQ5V1RCRHZ',
       apiKey: '625dc522ad32d77e986d35fc93081394',
     },
+    menu:{
+      linkMenu: "https://www.orange.jo/_layouts/15/orange2013master/en/assets/js/newfinaljs.js",
+      mosseConf: 'language: "en",country: "ojo",typeEnv: "prod"',
+      menuDivId: "mosse-header",
+      footerDivId: "mosse-footer",
+    },
     direction: "ltr",
     advertising:{
       image: "../../public/img/pub.jpg",

@@ -81,7 +81,6 @@ class Product extends Component{
                             <ul className={this.state.isRow ? "Results-items SearchProduct-wrapper resultProductsWrapper isRow" : "Results-items SearchProduct-wrapper resultProductsWrapper"}>
                             {
                                 this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
-                                    console.log(hits._highlightResult)
                                     return(
                                     <li className="SearchProduct" key={i}>
                                         <a target="_blank" href={hits.objectID} rel="noreferrer">
