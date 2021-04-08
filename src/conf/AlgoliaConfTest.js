@@ -55,12 +55,12 @@ window.searchAlgoliaConfig = {
                 hitsToShow: 5,
               },
               {
-                indiceKey: 'orange.be_obel_fr_support',
+                indiceKey: 'orange.bf_fr_assistance',
                 template: "AssistanceTest",
-                tabTitle: "Assistance Belgique 2",
-                title: "Assistance OBL 2",
+                tabTitle: "Assistance OBF",
+                title: "Assistance OBF",
                 contentMaxWords: 25,
-                hitsToShow: 10,
+                hitsToShow: 7,
               },
               {
                 indiceKey: 'orange.be_video',

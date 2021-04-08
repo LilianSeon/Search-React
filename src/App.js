@@ -45,6 +45,8 @@ class App extends Component {
       hits5: [],
       hits6: [],
       hits7: [],
+      tabIndex: 0,
+      nbIndex: 0,
       count: 0,
       suggest: [],
       algoliaConf: window.searchAlgoliaConfig,
@@ -67,12 +69,16 @@ class App extends Component {
           })
         })
       }
+      this.setState({
+        nbIndex: i
+      })
       return true;
     })
 
     if (!window.SpeechRecognition) {
       if (!window.webkitSpeechRecognition) {
         // Implement graceful fail if browser doesn't support SpeechRecognition API
+        console.log('STT Not supported')
         return
       }
 
@@ -102,6 +108,11 @@ class App extends Component {
     try{
       window.index0.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+0] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 0){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits0: hits
         })
@@ -113,6 +124,11 @@ class App extends Component {
     try{
       window.index1.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+1] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 1){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits1: hits
         })
@@ -124,6 +140,11 @@ class App extends Component {
     try{
       window.index2.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+2] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 2){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits2: hits
         })
@@ -135,6 +156,11 @@ class App extends Component {
     try{
       window.index3.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+3] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 3){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits3: hits
         })
@@ -146,6 +172,11 @@ class App extends Component {
     try{
       window.index4.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+4] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 4){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+           })
+        }
         this.setState({
           hits4: hits
         })
@@ -157,6 +188,11 @@ class App extends Component {
     try{
       window.index5.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+5] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 5){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits5: hits
         })
@@ -168,6 +204,11 @@ class App extends Component {
     try{
       window.index6.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+6] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 6){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits6: hits
         })
@@ -179,6 +220,11 @@ class App extends Component {
     try{
       window.index7.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+7] = nbHits;
+        if(nbHits === 0 && this.state.tabIndex === 7){
+          this.setState({
+            tabIndex: this.state.tabIndex === this.state.nbIndex-1 ?  0 : this.state.tabIndex + 1
+          })
+        }
         this.setState({
           hits7: hits
         })
@@ -186,6 +232,7 @@ class App extends Component {
     }catch(e){
       return e;
     }
+    
 
 
   }
@@ -209,14 +256,13 @@ class App extends Component {
   }
 
   getFilter(result){
+    console.log(result);
     this.setState({index: result});
     window.searchAlgoliaConfig.indices.map((indices, i) => { // Init Algolia pour index product sorted
       if(indices.template === "Product"){
         window['index'+i] = searchClient.initIndex(result);
-  
-        window['index'+i].search(this.state.query, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
-          window['nbHits'+i] = nbHits;
-          eval('this.setState({hits'+i+': hits})')
+        window['index'+i].search(this.state.query, {hitsPerPage: 100}).then(() => {
+          this.setQuery({target:{value: this.state.query}})
         });
       }
       return true
@@ -266,9 +312,14 @@ handleListen(){
   }
 }
 
-
+  setTabIndex(index){
+    this.setState({
+      tabIndex: index
+    })
+  }
 
   render() {
+    console.log(this.state.tabIndex, this.state.nbIndex)
     return (
       <div>
         <Menu/>
@@ -320,7 +371,7 @@ handleListen(){
       </div>
     </div>
 
-        <Tabs direction={window.searchAlgoliaConfig.direction}>
+        <Tabs direction={window.searchAlgoliaConfig.direction} selectedIndex={this.state.tabIndex} onSelect={index => this.setTabIndex(index)}>
           <TabList>
             <ul className="nav nav-tabs nav-tabs-light">
               {
