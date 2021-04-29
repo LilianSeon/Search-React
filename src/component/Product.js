@@ -49,6 +49,10 @@ class Product extends Component{
         })
     }
 
+    handleClick(position){
+        this.props.clickPosition(position)
+    }
+
     render(){
         if(this.props.hits.length){
             return(
@@ -82,7 +86,7 @@ class Product extends Component{
                             {
                                 this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                                     return(
-                                    <li className="SearchProduct" key={i}>
+                                    <li className="SearchProduct" key={i} onClick={this.handleClick.bind(this, i)}>
                                         <a target="_blank" href={hits.objectID} rel="noreferrer">
                                             <div className="SearchProduct-imgWrapper">
                                                 <img src={hits.productPictureUrl} alt="" />

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Product from './component/Product';
+import Menu from './component/Menu';
 import Assistance from './component/Assistance';
 import AssistanceTest from './component/AssistanceTest';
 import Video from './component/Video';
@@ -13,6 +14,8 @@ import './conf/AlgoliaConfTest';
 import algoliasearch from 'algoliasearch';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import ReactGA from 'react-ga';
+
 const searchClient = algoliasearch( // Connexion à Algolia API
   window.searchAlgoliaConfig.algolia.applicationId,
   window.searchAlgoliaConfig.algolia.apiKey
@@ -25,7 +28,9 @@ window.searchAlgoliaConfig.indices.map((indices, i) => { // Init Algolia pour ch
 })
 
 
-
+ReactGA.initialize('UA-108488354-23', {
+  debug: true
+}); // Connexion à Google Analytics
 
 
 class App extends Component {
@@ -51,6 +56,7 @@ class App extends Component {
       index: "",
       listening: false,
       voice: "",
+      typingTimeout: 0
     };
     this.setQuery({target:{value: " "}})
     
@@ -83,13 +89,28 @@ class App extends Component {
 
     this.recognition = new window.SpeechRecognition()
     this.recognition.interimResults = true
+
   
   }
 
   setQuery(e){ // Set the query of the user
+
     this.setState({
       query: e.target.value
     });
+
+    if (this.state.typingTimeout) {
+      clearTimeout(this.state.typingTimeout);
+   }
+
+   this.setState({
+      typingTimeout: setTimeout(function () {
+          if(e.target.defaultValue){
+            console.log(e.target.value)
+            ReactGA.ga('send', 'event', 'site_search', 'request', e.target.value)
+          }
+        }, 5000)
+   });
 
     window.searchAlgoliaConfig.indices.map((indices, i) => {
       if(indices.template === "Suggestion" ){
@@ -229,8 +250,6 @@ class App extends Component {
     }catch(e){
       return e;
     }
-    
-
 
   }
 
@@ -264,6 +283,11 @@ class App extends Component {
       }
       return true
     })
+}
+
+getPosition(position){
+  console.log(this.state.query);
+  ReactGA.ga('send', 'event', 'site_search', 'click_position', this.state.query, position+1)
 }
 
 suggestCliked(query){
@@ -320,6 +344,7 @@ handleListen(){
   render() {
     return (
       <div>
+        <Menu/>
         <div id={window.searchAlgoliaConfig.menu.menuDivId}></div>
         <div className="PageSearch">
         <div className="container">
@@ -387,7 +412,7 @@ handleListen(){
               if(indices.template === "Product"){
                 return(
                   <TabPanel key={i}>
-                    <Product callback={this.getFilter.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow} index={indices.indiceKey} select={indices}/>
+                    <Product clickPosition={this.getPosition.bind(this)} callback={this.getFilter.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow} index={indices.indiceKey} select={indices}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Assistance"){
