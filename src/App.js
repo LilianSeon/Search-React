@@ -18,7 +18,6 @@ const searchClient = algoliasearch( // Connexion à Algolia API
   window.searchAlgoliaConfig.algolia.apiKey
 );
 
-
 window.searchAlgoliaConfig.indices.map((indices, i) => { // Init Algolia pour chaque index
   window['index'+i] = searchClient.initIndex(indices.indiceKey);
   window['nbHits'+i] = 0;
@@ -52,11 +51,8 @@ class App extends Component {
       index: "",
       listening: false,
       voice: "",
-      mosseConf: window.searchAlgoliaConfig.menu.mosseConf
     };
     this.setQuery({target:{value: " "}})
-    
-
     
   }
 
@@ -87,6 +83,7 @@ class App extends Component {
 
     this.recognition = new window.SpeechRecognition()
     this.recognition.interimResults = true
+  
   }
 
   setQuery(e){ // Set the query of the user
@@ -318,11 +315,11 @@ handleListen(){
     })
   }
 
+  
+
   render() {
-    console.log(this.state.tabIndex, this.state.nbIndex)
     return (
       <div>
-        <script type="text/javascript">{JSON.stringify(this.state.mosseConf)}</script>
         <div id={window.searchAlgoliaConfig.menu.menuDivId}></div>
         <div className="PageSearch">
         <div className="container">
@@ -426,7 +423,6 @@ handleListen(){
         </div>
         </div>
         <div id={window.searchAlgoliaConfig.menu.footerDivId}></div>
-        <script type="text/javascript" src={window.searchAlgoliaConfig.menu.linkMenu}></script> 
       </div>
     )
   }
