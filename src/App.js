@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Product from './component/Product';
 import Menu from './component/Menu';
-import Assistance from './component/Assistance';
 import AssistanceTest from './component/AssistanceTest';
 import Video from './component/Video';
 import Brand from './component/Brand';
@@ -263,6 +262,10 @@ class App extends Component {
       return true;
     })
 
+    if(count === 0 && this.state.query !== ""){
+      ReactGA.ga('send', 'event', 'site_search', 'no_results', this.state.query)
+    }
+
     return count;
     
   }
@@ -272,7 +275,6 @@ class App extends Component {
   }
 
   getFilter(result){
-    console.log(result);
     this.setState({index: result});
     window.searchAlgoliaConfig.indices.map((indices, i) => { // Init Algolia pour index product sorted
       if(indices.template === "Product"){
@@ -285,9 +287,8 @@ class App extends Component {
     })
 }
 
-getPosition(position){
-  console.log(this.state.query);
-  ReactGA.ga('send', 'event', 'site_search', 'click_position', this.state.query, position+1)
+getPosition(position, eventAction){
+  ReactGA.ga('send', 'event', 'site_search', eventAction, this.state.query ? this.state.query : "Empty query", position+1, this.state.tabIndex+1)
 }
 
 suggestCliked(query){
@@ -305,8 +306,11 @@ handleListen(){
   if (this.state.listening) {
     this.recognition.start()
     this.recognition.onend = () => {
-      console.log('continue..')
-      this.recognition.start()
+      console.log('No more speech detected')
+      this.setState({
+        listening: false
+      })
+      ReactGA.ga('send', 'event', 'site_search', 'vocal_search', this.state.query ? this.state.query : "Empty query")
     }
   } else {
     this.recognition.stop()
@@ -415,28 +419,22 @@ handleListen(){
                     <Product clickPosition={this.getPosition.bind(this)} callback={this.getFilter.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow} index={indices.indiceKey} select={indices}/>
                   </TabPanel>
                 )
-              }else if(indices.template === "Assistance"){
-                return(
-                  <TabPanel key={i}>
-                    <Assistance hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
-                  </TabPanel>
-                )
               }else if(indices.template === "Video"){
                 return(
                   <TabPanel key={i}>
-                    <Video hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Video clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "AssistanceTest"){
                 return(
                   <TabPanel key={i}>
-                    <AssistanceTest hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <AssistanceTest clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Brand"){
                 return(
                   <TabPanel key={i}>
-                    <Brand hits={this.state[`hits${i}`]} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Brand clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }

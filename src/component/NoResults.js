@@ -19,7 +19,7 @@ class NoResults extends Component{
             icon2: this.props.labels.banner.icon2,
             icon3: this.props.labels.banner.icon3,
             icon4: this.props.labels.banner.icon4
-        })
+        })  
     }
 
     render(){

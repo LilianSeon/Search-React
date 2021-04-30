@@ -54,7 +54,7 @@ window.searchAlgoliaConfig = {
               },
               {
                 indiceKey: 'orange.be_obel_fr_support',
-                template: "Assistance",
+                template: "AssistanceTest",
                 tabTitle: "Assistance Belgique",
                 title: "Assistance OBL",
                 contentMaxWords: 25,

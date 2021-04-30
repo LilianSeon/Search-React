@@ -32,6 +32,10 @@ class Video extends Component{
         });
     }
 
+    handleClick(position, eventAction){
+        this.props.clickPosition(position, eventAction)
+    }
+
     render(){
         if(this.props.hits.length){
             return(
@@ -44,7 +48,7 @@ class Video extends Component{
                         {
                             this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                                 return(
-                                    <li key={i} className="SearchVideo">
+                                    <li key={i} className="SearchVideo" onClick={this.handleClick.bind(this, i, "click_position")}>
                                         <a target="_blank" href={hits.videoUrl} rel="noreferrer"> 
                                             <div className="SearchVideo-imgWrapper"> 
                                                 <img className="SearchVideo-img" src={hits.img_medium} alt=""/> 
@@ -63,8 +67,8 @@ class Video extends Component{
                         <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button>
                     </div>
                     <div className="PageSearch-sidebar"> 
-                        <div className="SearchAdvertisment"> 
-                            <a href={this.state.url}><img src={pub} alt="Go Plus - res - FR"/></a> 
+                        <div className="SearchAdvertisment" onClick={this.handleClick.bind(this, 1, "click_advertising")}> 
+                            <a href={window.searchAlgoliaConfig.advertising.url} target="_blank" rel="noreferrer"><img src={pub} alt="Go Plus - res - FR"/></a> 
                         </div> 
                     </div>
                 </div>

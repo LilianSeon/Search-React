@@ -49,8 +49,8 @@ class Product extends Component{
         })
     }
 
-    handleClick(position){
-        this.props.clickPosition(position)
+    handleClick(position, eventAction){
+        this.props.clickPosition(position, eventAction)
     }
 
     render(){
@@ -86,7 +86,7 @@ class Product extends Component{
                             {
                                 this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                                     return(
-                                    <li className="SearchProduct" key={i} onClick={this.handleClick.bind(this, i)}>
+                                    <li className="SearchProduct" key={i} onClick={this.handleClick.bind(this, i, "click_position")}>
                                         <a target="_blank" href={hits.objectID} rel="noreferrer">
                                             <div className="SearchProduct-imgWrapper">
                                                 <img src={hits.productPictureUrl} alt="" />
@@ -109,8 +109,8 @@ class Product extends Component{
                         </div>
                 </div>
                 <div className="PageSearch-sidebar"> 
-                    <div className="SearchAdvertisment"> 
-                    <a href={this.state.url}><img src={pub} alt="Go Plus - res - FR"/></a> 
+                    <div className="SearchAdvertisment" onClick={this.handleClick.bind(this, 1, "click_advertising")}> 
+                    <a href={window.searchAlgoliaConfig.advertising.url} target="_blank" rel="noreferrer"><img src={pub} alt="Go Plus - res - FR"/></a> 
                     </div> 
                 </div>
                 </div>

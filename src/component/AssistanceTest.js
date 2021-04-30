@@ -33,6 +33,10 @@ class AssistanceTest extends Component{
         });
     }
 
+    handleClick(position, eventAction){
+        this.props.clickPosition(position, eventAction)
+    }
+
     render(){
         if(this.props.hits.length){
             return(
@@ -43,7 +47,7 @@ class AssistanceTest extends Component{
                             {
                                 this.props.hits.slice(0, this.state.hitsToShow).map((hits, i) => {
                                     return(
-                                        <li className="SearchResult" key={i}>
+                                        <li className="SearchResult" key={i} onClick={this.handleClick.bind(this, i, "click_position")}>
                                             <a target="_blank" href={hits.objectID} rel="noreferrer" style={{marginBottom:0}}> 
                                                 <div className="assistance-title">{ReactHtmlParser(hits._highlightResult.title.value)}</div> 
                                             </a>
@@ -57,8 +61,8 @@ class AssistanceTest extends Component{
                         <button type="button" className="btn btn-secondary PageSearch-btn showMoreSearchResults" onClick={this.showMore.bind(this)}>Afficher plus de résultats </button>
                     </div>
                     <div className="PageSearch-sidebar"> 
-                        <div className="SearchAdvertisment"> 
-                            <a href={this.state.url}><img src={pub} alt="Go Plus - res - FR"/></a> 
+                        <div className="SearchAdvertisment" onClick={this.handleClick.bind(this, 1, "click_advertising")}> 
+                            <a href={window.searchAlgoliaConfig.advertising.url} target="_blank" rel="noreferrer"><img src={pub} alt="Go Plus - res - FR"/></a> 
                         </div> 
                     </div>
                 </div>
