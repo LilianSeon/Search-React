@@ -10,7 +10,7 @@ class NoResults extends Component{
             icon2: "",
             icon3: "",
             icon4: "",
-        };   
+        };
     }
 
     componentDidMount(){

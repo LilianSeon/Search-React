@@ -4,16 +4,17 @@ import Menu from './component/Menu';
 import AssistanceTest from './component/AssistanceTest';
 import Video from './component/Video';
 import Brand from './component/Brand';
-import './App.css';
 import './css/boosted.css';
 import './css/style.css';
-import './index.css'
+import './css/index.css'
 import './conf/AlgoliaConfTest';
 
 import algoliasearch from 'algoliasearch';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import ReactGA from 'react-ga';
+
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 const searchClient = algoliasearch( // Connexion à Algolia API
   window.searchAlgoliaConfig.algolia.applicationId,
@@ -55,11 +56,29 @@ class App extends Component {
       index: "",
       listening: false,
       voice: "",
-      typingTimeout: 0
+      typingTimeout: 0,
     };
     this.setQuery({target:{value: " "}})
     
   }
+
+  onMouseDown = e => {
+    this.setState({ ...this.state, isScrolling: true, 
+     clientX: e.clientX });
+  };
+
+  onMouseUp = () => {
+    this.setState({ ...this.state, isScrolling: false });
+  };
+
+  onMouseMove = e => {
+    const { clientX, scrollX } = this.state;
+    if (this.state.isScrolling) {
+      //this.ref.current.scrollLeft = scrollX + e.clientX - clientX;
+      this.state.scrollX = scrollX + e.clientX - clientX;
+      this.state.clientX = e.clientX;
+    }
+  };
 
   componentDidMount(){
     window.searchAlgoliaConfig.indices.map((indices, i) => {
@@ -79,7 +98,7 @@ class App extends Component {
     if (!window.SpeechRecognition) {
       if (!window.webkitSpeechRecognition) {
         // Implement graceful fail if browser doesn't support SpeechRecognition API
-        console.log('STT Not supported')
+        console.log('Speech To Text not supported')
         return
       }
 
@@ -89,41 +108,16 @@ class App extends Component {
     this.recognition = new window.SpeechRecognition()
     this.recognition.interimResults = true
 
-  
   }
 
-  setQuery(e){ // Set the query of the user
+  async setQuery(e){ // Set the query of the user
 
     this.setState({
       query: e.target.value
-    });
-
-    if (this.state.typingTimeout) {
-      clearTimeout(this.state.typingTimeout);
-   }
-
-   this.setState({
-      typingTimeout: setTimeout(function () {
-          if(e.target.defaultValue){
-            console.log(e.target.value)
-            ReactGA.ga('send', 'event', 'site_search', 'request', e.target.value)
-          }
-        }, 5000)
-   });
-
-    window.searchAlgoliaConfig.indices.map((indices, i) => {
-      if(indices.template === "Suggestion" ){
-        window['index'+i].search(e.target.value).then(({hits}) => {
-          this.setState({
-            suggest: hits
-          })
-        })
-      }
-      return true;
     })
 
     try{
-      window.index0.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index0.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+0] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 0){
           this.setState({
@@ -139,7 +133,7 @@ class App extends Component {
     }
 
     try{
-      window.index1.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index1.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+1] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 1){
           this.setState({
@@ -151,11 +145,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
 
     try{
-      window.index2.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index2.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+2] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 2){
           this.setState({
@@ -167,11 +161,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
 
     try{
-      window.index3.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index3.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+3] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 3){
           this.setState({
@@ -183,11 +177,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
-
+    
     try{
-      window.index4.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index4.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+4] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 4){
           this.setState({
@@ -199,11 +193,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
-
+    
     try{
-      window.index5.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index5.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+5] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 5){
           this.setState({
@@ -215,11 +209,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
 
     try{
-      window.index6.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index6.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+6] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 6){
           this.setState({
@@ -231,11 +225,11 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
 
     try{
-      window.index7.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
+      await window.index7.search(e.target.value, {hitsPerPage: 100}).then(({ hits, nbHits }) => {
         window['nbHits'+7] = nbHits;
         if(nbHits === 0 && this.state.tabIndex === 7){
           this.setState({
@@ -247,12 +241,24 @@ class App extends Component {
         })
       });
     }catch(e){
-      return e;
+      
     }
 
-  }
 
-  count(){
+    if (this.state.typingTimeout) {
+      clearTimeout(this.state.typingTimeout);
+   }
+
+    window.searchAlgoliaConfig.indices.map((indices, i) => {
+      if(indices.template === "Suggestion" ){
+        window['index'+i].search(e.target.value).then(({hits}) => {
+          this.setState({
+            suggest: hits
+          })
+        })
+      }
+      return true;
+    })
     
     let count = 0;
     window.searchAlgoliaConfig.indices.map((indices, i) => {
@@ -262,12 +268,22 @@ class App extends Component {
       return true;
     })
 
+    this.setState({
+      count: count,
+      typingTimeout: setTimeout(function () {
+        if(e.target.defaultValue){
+          ReactGA.ga('send', 'event', 'site_search', 'request', e.target.value)
+        }
+      }, 5000)
+    })
+
+    this.sendGANoResult(count)
+  }
+
+  sendGANoResult(count){
     if(count === 0 && this.state.query !== ""){
       ReactGA.ga('send', 'event', 'site_search', 'no_results', this.state.query)
     }
-
-    return count;
-    
   }
 
   clearQuery(){
@@ -288,7 +304,12 @@ class App extends Component {
 }
 
 getPosition(position, eventAction){
-  ReactGA.ga('send', 'event', 'site_search', eventAction, this.state.query ? this.state.query : "Empty query", position+1, this.state.tabIndex+1)
+  if(eventAction === "click_advertising"){
+    ReactGA.ga('send', 'event', 'site_search', eventAction, this.state.query ? this.state.query : "Empty query")
+  }else{
+    ReactGA.ga('send', 'event', 'site_search', eventAction, this.state.query ? this.state.query : "Empty query", position+1, this.state.tabIndex+1)
+  }
+  
 }
 
 suggestCliked(query){
@@ -382,34 +403,44 @@ handleListen(){
         </button>
         </form>
 
-        <div className="TopTendances">
-      <h2 className="TopTendances-title">{window.searchAlgoliaConfig.label.topTrends}</h2>
-      <ul className="TopTendances-items Autosearch-items">
-      {
-        this.state.suggest.slice(0, 6).map((suggest, i) => {
-            return(
-            <li key={i} onClick={() => this.suggestCliked(suggest.query)}>{suggest.query}</li>
-            )
-        })
-      }
-      </ul>
-      <div className="SearchDetails" style={{display: "block"}}>
-        <span className="SearchDetails-count">{this.count()}</span> {window.searchAlgoliaConfig.label.resultsFor} «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
-      </div>
+      <div className="TopTendances">
+        <h2 className="TopTendances-title">{window.searchAlgoliaConfig.label.topTrends}</h2>
+        <div className="swiper-container swiper-container-initialized swiper-container-horizontal">
+          <ul className="TopTendances-items swiper-wrapper SearchTabs">
+            <ScrollContainer vertical={false} className="scroll">
+          {
+            this.state.suggest.slice(0, 6).map((suggest, i) => {
+                return(
+                <li className="SearchTabs-item" key={i} onClick={() => this.suggestCliked(suggest.query)}>{suggest.query}</li>
+                )
+            })
+          }
+          </ScrollContainer>
+          </ul>
+        </div>
+        <div className="SearchDetails" style={{display: "block"}}>
+          <span className="SearchDetails-count">{this.state.count}</span> {window.searchAlgoliaConfig.label.resultsFor} «&nbsp;<span className="SearchDetails-keyword">{this.state.query}</span>&nbsp;»
+        </div>
     </div>
-
+      
         <Tabs direction={window.searchAlgoliaConfig.direction} selectedIndex={this.state.tabIndex} onSelect={index => this.setTabIndex(index)}>
           <TabList>
-            <ul className="nav nav-tabs nav-tabs-light">
-              {
-                window.searchAlgoliaConfig.indices.map((indices, i) => {
-                  if(indices.template !== "Suggestion" ){
-                    return(<Tab key={i} disabled={window['nbHits'+i] === 0 ? true : false} selectedClassName="selected" className="SearchTabs-item nav-item" style={{color: window['nbHits'+i] === 0 ? "#ddd" : "#000", cursor: window['nbHits'+i] === 0 ? "not-allowed" : "pointer"}}>{indices.tabTitle} <span id={"count"+i} className="SearchTabs-resultsCount"> ({window['nbHits'+i]})</span></Tab>)
-                  }
-                  return true;
-                })
-              }
-            </ul>
+            <div className="SearchTabs-container">
+              <div className="SearchTabs swiper-container swiper-container-initialized swiper-container-horizontal">
+                <ul className="SearchTabs-list swiper-wrapper">
+                  <ScrollContainer vertical={false} className="scroll">
+                    {
+                      window.searchAlgoliaConfig.indices.map((indices, i) => {
+                        if(indices.template !== "Suggestion" ){
+                          return(<Tab key={i} disabled={window['nbHits'+i] === 0 ? true : false} selectedClassName="selected" className="SearchTabs-item" style={{color: window['nbHits'+i] === 0 ? "#ddd" : "#000", cursor: window['nbHits'+i] === 0 ? "not-allowed" : "pointer"}}>{indices.tabTitle} <span id={"count"+i} className="SearchTabs-resultsCount"> ({window['nbHits'+i]})</span></Tab>)
+                        }
+                        return true;
+                      })
+                    }
+                    </ScrollContainer>
+                </ul>
+              </div>
+            </div>
           </TabList>
           {
             window.searchAlgoliaConfig.indices.map((indices, i) => {

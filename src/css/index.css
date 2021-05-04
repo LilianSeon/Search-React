@@ -18,3 +18,45 @@
 .react-tabs__tab-list{
     padding-left: 0px;
 }
+
+body {
+    margin: 0;
+    /*font-size: 1.6rem !important;*/
+  }
+
+
+.SearchTabs-list{
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    border-bottom: 1px solid rgb(172, 165, 165);
+}
+
+.TopTendances-items{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;
+}
+
+.scroll{
+    display: inline-flex;
+}
+
+.TopTendances-items > div > li {
+    margin: 5px;
+    display: inline-block;
+    border-radius: 15px;
+    padding: 3px 12px 5px;
+    height: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid #000;
+}
+
+.SearchTabs{
+    z-index: 1;
+    background:linear-gradient(90deg, transparent 92%, rgb(238, 236, 236));
+}
