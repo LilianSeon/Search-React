@@ -58,5 +58,5 @@ body {
 
 .SearchTabs{
     z-index: 1;
-    background:linear-gradient(90deg, transparent 92%, rgb(238, 236, 236));
+    background:linear-gradient(90deg, transparent 85%, rgb(255, 248, 250));
 }

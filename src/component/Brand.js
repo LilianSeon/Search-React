@@ -3,6 +3,8 @@ import NoResults from './NoResults';
 import pub from '../img/pub.jpg'
 import ReactHtmlParser from 'react-html-parser';
 
+const configuration = require('./AlgoliaConf');
+
 class Brand extends Component{
 
     constructor(props) {
@@ -47,14 +49,14 @@ class Brand extends Component{
                     </div>
                     <div className="PageSearch-sidebar"> 
                         <div className="SearchAdvertisment" onClick={this.handleClick.bind(this, 1, "click_advertising")}> 
-                            <a href={window.searchAlgoliaConfig.advertising.url} target="_blank" rel="noreferrer"><img src={pub} alt="Go Plus - res - FR"/></a> 
+                            <a href={configuration.advertising.url} target="_blank" rel="noreferrer"><img src={pub} alt="Go Plus - res - FR"/></a> 
                         </div> 
                     </div>
                 </div>
             )
         }else{
             return(
-                <NoResults labels={window.searchAlgoliaConfig.label.noResults}/>
+                <NoResults labels={configuration.label.noResults}/>
             )
         }
     }
