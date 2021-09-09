@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import Product from './Product';
 import Menu from './Menu';
-import AssistanceTest from './AssistanceTest'
+import Assistance from './Assistance'
 import Video from './Video';
 import Brand from './Brand';
 import '../css/boosted.css';
 import '../css/style.css';
 import '../css/index.css';
-//import '../conf/AlgoliaConfTest';
 
 import algoliasearch from 'algoliasearch';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -16,32 +15,58 @@ import ReactGA from 'react-ga';
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 
+import TagManager from 'react-gtm-module';
+
 const configuration = require('./AlgoliaConf');
 
-const searchClient = algoliasearch( // Connexion à Algolia API
+const searchClient = algoliasearch( // Connexion to Algolia API
   configuration.algolia.applicationId,
   configuration.algolia.apiKey
 );
 
-configuration.indices.map((indices, i) => { // Init Algolia pour chaque index
+configuration.indices.map((indices, i) => { // Init Algolia for every index
   window['index'+i] = searchClient.initIndex(indices.indiceKey);
   window['nbHits'+i] = 0;
   return true
 })
 
-
+/**
+ * Connexion to Google Analytics
+ */
 ReactGA.initialize('UA-108488354-23', {
-  debug: true
-}); // Connexion à Google Analytics
+  debug: false
+});
+
+const tagManagerArgs = {
+  gtmId: 'GTM-W8VKDK9'
+}
+TagManager.initialize(tagManagerArgs)
 
 
+
+/**
+ * Parent component that display the search page.
+ * @version 1.0
+ * @author Séon Lilian, Orange Groupe
+ * 
+ *GitHub : https://github.com/LilianSeon/Search-React/tree/master 
+ */
 class SearchPage extends Component {
 
-
+/**
+ * Set up all the variables that we need in the state.
+ * @constructor
+ * @param {*} props 
+ */
   constructor(props) {
     super(props);
+
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    const kw = urlParams.get('kw')
+
     this.state = {
-      query: "",
+      query: kw ? kw : "",
       hits0: [],
       hits1: [],
       hits2: [],
@@ -60,27 +85,9 @@ class SearchPage extends Component {
       voice: "",
       typingTimeout: 0,
     };
-    this.setQuery({target:{value: " "}})
+    this.setQuery(kw ? {target:{value: kw}} : {target:{value: " "}})
     
   }
-
-  onMouseDown = e => {
-    this.setState({ ...this.state, isScrolling: true, 
-     clientX: e.clientX });
-  };
-
-  onMouseUp = () => {
-    this.setState({ ...this.state, isScrolling: false });
-  };
-
-  onMouseMove = e => {
-    const { clientX, scrollX } = this.state;
-    if (this.state.isScrolling) {
-      //this.ref.current.scrollLeft = scrollX + e.clientX - clientX;
-      this.state.scrollX = scrollX + e.clientX - clientX;
-      this.state.clientX = e.clientX;
-    }
-  };
 
   componentDidMount(){
     configuration.indices.map((indices, i) => {
@@ -112,7 +119,13 @@ class SearchPage extends Component {
 
   }
 
-  async setQuery(e){ // Set the query of the user
+  /**
+   * Set the query of the user and search this query into Algolia indexs. (8 indexs max.)
+   * @async
+   * @param {Object} e - User's query 
+   * @public
+   */
+  async setQuery(e){
 
     this.setState({
       query: e.target.value
@@ -275,6 +288,12 @@ class SearchPage extends Component {
       typingTimeout: setTimeout(function () {
         if(e.target.defaultValue){
           ReactGA.ga('send', 'event', 'site_search', 'request', e.target.value)
+          TagManager.dataLayer({
+            dataLayer: {
+              'event': 'request',
+              'value': e.target.value
+            }
+        })
         }
       }, 5000)
     })
@@ -282,16 +301,29 @@ class SearchPage extends Component {
     this.sendGANoResult(count)
   }
 
+  /**
+   * Send to GA when no result
+   * @param {number} count 
+   * @public
+   */
   sendGANoResult(count){
     if(count === 0 && this.state.query !== ""){
       ReactGA.ga('send', 'event', 'site_search', 'no_results', this.state.query)
     }
   }
-
+/**
+ * Clear the query when cross is clicked
+ * @public
+ */
   clearQuery(){
     this.setQuery({target:{value: ""}})
   }
 
+/**
+ * Apply the right sort for Product indexs
+ * @param {string} result - Index name
+ * @public
+ */
   getFilter(result){
     this.setState({index: result});
     configuration.indices.map((indices, i) => { // Init Algolia pour index product sorted
@@ -304,7 +336,12 @@ class SearchPage extends Component {
       return true
     })
 }
-
+/**
+ * Send to GA the possition click or if the advertising has been clicked
+ * @param {number} position 
+ * @param {string} eventAction
+ * @public
+ */
 getPosition(position, eventAction){
   if(eventAction === "click_advertising"){
     ReactGA.ga('send', 'event', 'site_search', eventAction, this.state.query ? this.state.query : "Empty query")
@@ -313,7 +350,11 @@ getPosition(position, eventAction){
   }
   
 }
-
+/**
+ * Reset the query when a suggestion has been clicked
+ * @param {string} query
+ * @public 
+ */
 suggestCliked(query){
   this.setQuery({target:{value: query}})
 }
@@ -324,7 +365,10 @@ microClicked(){
   }, this.handleListen)
   
 }
-
+/**
+ * Handle Speech recognition start and stop + Send to GA the 'vocal_search' query
+ * @public
+ */
 handleListen(){
   if (this.state.listening) {
     this.recognition.start()
@@ -367,11 +411,18 @@ handleListen(){
   }
 
   
-
+/**
+ * Display the whole page. You can change the templates's name in here
+ * @returns
+ */
   render() {
     return (
       <div>
-        <Menu/>
+        {
+          configuration.menu.linkMenu !== "" ?
+          <Menu/>
+          : null
+        }
         <div id={configuration.menu.menuDivId}></div>
         <div className="PageSearch">
         <div className="container">
@@ -458,10 +509,10 @@ handleListen(){
                     <Video clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
-              }else if(indices.template === "AssistanceTest"){
+              }else if(indices.template === "Assistance"){
                 return(
                   <TabPanel key={i}>
-                    <AssistanceTest clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
+                    <Assistance clickPosition={this.getPosition.bind(this)} hits={this.state[`hits${i}`]} contentMaxWords={indices.contentMaxWords} title={indices.title} hitsToShow={indices.hitsToShow}/>
                   </TabPanel>
                 )
               }else if(indices.template === "Brand"){

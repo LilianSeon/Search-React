@@ -1,0 +1,5 @@
+SearchPage example:
+
+```js
+<SearchPage  />
+```

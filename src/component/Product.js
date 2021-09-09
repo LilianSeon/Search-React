@@ -5,6 +5,9 @@ import ReactHtmlParser from 'react-html-parser';
 
 const configuration = require('./AlgoliaConf');
 
+/**
+ * Product template
+ */
 class Product extends Component{
 
     constructor(props) {
@@ -25,7 +28,13 @@ class Product extends Component{
             url: configuration.advertising.url,
         })
     }
-
+    /**
+     * Truncate sentences
+     * @param {string} str 
+     * @param {number} no_words 
+     * @returns {string}
+     * @public
+     */
     truncate(str, no_words) {
         if(str.split(" ").length > no_words){
             return str.split(" ").splice(0,no_words).join(" ")+"...";
@@ -44,7 +53,10 @@ class Product extends Component{
         this.setState({selected: event.target.value});
         this.props.callback(event.target.value)
     }
-
+    /**
+     * Change how products are displayed
+     * @public
+     */
     handleRow(){
         this.setState({
             isRow: !this.state.isRow

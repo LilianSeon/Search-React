@@ -5,6 +5,9 @@ import ReactHtmlParser from 'react-html-parser';
 
 const configuration = require('./AlgoliaConf');
 
+/**
+ * Brand template
+ */
 class Brand extends Component{
 
     constructor(props) {
@@ -16,7 +19,11 @@ class Brand extends Component{
         
     }
 
-    handleClick(position, eventAction){
+    componentDidMount(){
+        console.log(this.props.hits)
+    }
+
+    handleClick(position, eventAction){ // GA
         this.props.clickPosition(position, eventAction)
     }
 

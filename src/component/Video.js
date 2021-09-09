@@ -6,6 +6,9 @@ import ReactHtmlParser from 'react-html-parser';
 
 const configuration = require('./AlgoliaConf');
 
+/**
+ * Video template
+ */
 class Video extends Component{
 
     constructor(props) {
@@ -17,9 +20,15 @@ class Video extends Component{
     }
 
     componentDidMount(){
-
+        
     }
-
+    /**
+     * Truncate sentences
+     * @param {string} str 
+     * @param {number} no_words 
+     * @returns {string}
+     * @public
+     */
     truncate(str, no_words) {
         if(str.split(" ").length > no_words){
             return str.split(" ").splice(0,no_words).join(" ")+"...";

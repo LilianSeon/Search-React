@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
-
+/**
+ * No results template
+ */
 class NoResults extends Component{
 
     constructor(props) {

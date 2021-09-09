@@ -4,7 +4,7 @@ module.exports = {
         apiKey: '625dc522ad32d77e986d35fc93081394',
       },
       menu:{
-        linkMenu: "https://www.orange.jo/_layouts/15/orange2013master/en/assets/js/newfinaljs.js",
+        linkMenu: "",
         mosseConf: 'language: "en",country: "ojo",typeEnv: "prod"',
         menuDivId: "mosse-header",
         footerDivId: "mosse-footer",
@@ -54,7 +54,7 @@ module.exports = {
                 },
                 {
                   indiceKey: 'orange.be_obel_fr_support',
-                  template: "AssistanceTest",
+                  template: "Assistance",
                   tabTitle: "Assistance Belgique",
                   title: "Assistance OBL",
                   contentMaxWords: 25,
@@ -62,7 +62,7 @@ module.exports = {
                 },
                 {
                   indiceKey: 'orange.bf_fr_assistance',
-                  template: "AssistanceTest",
+                  template: "Assistance",
                   tabTitle: "Assistance OBF",
                   title: "Assistance OBF",
                   contentMaxWords: 25,
